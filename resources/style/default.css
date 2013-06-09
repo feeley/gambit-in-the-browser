@@ -1,0 +1,83 @@
+
+.pastegrab {
+    background-color: black;
+    overflow: hidden;
+    outline: 0px none transparent;
+    border: 0px none transparent;
+    resize: none;
+}
+
+.terminal-text {
+    white-space: pre;
+}
+
+.term_area {
+    /* background: -webkit-linear-gradient(-45deg, #000000 0%,#424242 79%,#515151 100%); */
+    background-color: black;
+    color: white;
+    font-family: monospace;
+    font-size: 12pt;
+    visibility: visible;
+    height: 100%;
+    /* overflow-x: hidden; */
+    /* overflow-y: auto; */
+    overflow: hidden;
+    /* white-space: nowrap; */
+    outline: 0px none transparent;
+}
+
+.log_entry {
+    max-height: 200px;
+    overflow: auto;
+}
+
+#log {
+    height: 100%;
+    overflow: auto;
+}
+
+#log > .fresh {
+    background-color: #ddd;
+}
+
+.font_control {
+    visibility: hidden;
+}
+
+.font_control_div {
+    height: 0px;
+}
+
+.top {
+    background-color: #222;
+    overflow: hidden;
+    /* max-height: 20%; */
+}
+
+.left {
+    background-color: #222;
+    float: left;
+    overflow: auto;
+}
+
+.middle {
+    overflow: hidden;
+}
+
+.center {
+    float: left;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.right {
+    background-color: #222;
+    float: left;
+    overflow: hidden;
+}
+
+.bottom {
+    background-color: #222;
+    overflow: hidden;
+    /* max-height: 20%; */
+}

@@ -1,0 +1,146 @@
+
+.terminus-table {
+    border: 2px solid white;
+    margin: 5px;
+    display: table;
+}
+
+.terminus-table .terminus-row {
+    display: table-row;
+}
+
+.terminus-table .terminus-header .terminus-cell {
+    font-weight: bold;
+    text-align: center;
+    background-color: #555;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    border-left: none;
+    border-right: none;
+}
+
+.terminus-table .terminus-cell {
+    display: table-cell;
+    border-left: 1px solid #888;
+    border-right: 1px solid #888;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.terminus-table .odd {
+    background-color: #000;
+}
+
+.terminus-table .even {
+    background-color: #222;
+}
+
+
+
+.terminus-flow {
+    display: block;
+}
+
+.terminus-flow .terminus-row {
+    display: inline-block;
+    margin: 5px;
+    vertical-align: middle;
+}
+
+.terminus-flow .terminus-header {
+    display: none;
+}
+
+.terminus-flow .terminus-cell {
+    display: inline-block;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: block;
+}
+
+.terminus-flow .odd {
+    background-color: #222;
+}
+
+.terminus-flow .even {
+    background-color: #222;
+}
+
+
+.terminus-table .type-number {
+    text-align: right;
+}
+
+
+
+.bar {
+    background-color: #f83;
+    padding: 5px;
+}
+
+
+
+.file {
+    font-weight: bold;
+}
+
+.file a {
+    text-decoration: none;
+    color: white;
+}
+
+.file .executable {
+    color: #0f0;
+}
+
+.file .symlink {
+    color: #0ff;
+}
+
+.file .directory {
+    color: #44f;
+}
+
+.file .ext-avi,
+.file .ext-mkv,
+.file .ext-wmv,
+.file .ext-mp4 {
+    color: #f0a;
+}
+
+.file .ext-gif,
+.file .ext-jpg,
+.file .ext-jpeg,
+.file .ext-tiff,
+.file .ext-svg,
+.file .ext-bmp,
+.file .ext-png {
+    color: #a0f;
+}
+
+.file .ext-tar,
+.file .ext-gz,
+.file .ext-rar,
+.file .ext-zip,
+.file .ext-bz2 {
+    color: #f00;
+}
+
+.file .ext-c,
+.file .ext-cc,
+.file .ext-js,
+.file .ext-rb,
+.file .ext-lua,
+.file .ext-java,
+.file .ext-py {
+    color: #f83;
+}
+
+.file .save-file {
+    color: #888;
+    font-weight: normal;
+}
+
+.file .hidden-file {
+    font-weight: normal;
+}

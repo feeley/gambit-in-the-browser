@@ -1,0 +1,444 @@
+
+## SCREEN SIZE
+
+# Number of rows and columns.
+# The value is auto-calculated if no/false/null
+nlines: no
+ncols: no
+
+# Minimum number of lines and columns.
+nlines_min: 1
+ncols_min: 1
+
+# Maximum number of lines and columns.
+nlines_max: 200
+ncols_max: 1000
+
+# If nlines/ncols are auto-calculated, they will be reduced by
+# this number. You can use this e.g. to not overlap with the
+# vertical scrollbar if there is one.
+nlines_sub: 0
+ncols_sub: 2
+
+# An adjustment to the padding of the terminal when its height is not
+# a multiple of the character height.
+fiddle: -2
+
+# Number of characters to process in each batch.
+processing_length: 1000
+
+
+## BUFFERS
+
+# The terminal normally comes with two buffers (two screens). Each has
+# its own scrollback. The number of lines can be customized. If
+# cut_bottom is true for a given screen, blank lines at the bottom
+# will not be displayed.
+
+screens:
+
+  # 0
+  # Main screen (default)
+  - scrollback: 1000
+    cut_bottom: false
+    # You can customize colors for a particular screen by adding
+    # something like this (this makes black red):
+    # sgr:
+    #   colors:
+    #     0: red
+
+  # 1
+  # The alternate screen, used by most full-screen applications like
+  # emacs, vi, screen, etc. has no scrollback.
+  - scrollback: 0
+    cut_bottom: false
+
+  # You can add more screens if it suits your fancy, but right now
+  # there is no way to access them.
+
+
+## SCROLLING
+  
+scrolling:
+  # If true, we use jscrollpane to display scrollbars. If
+  # false, we use the standard OS-issue scrollbars.
+  jscrollpane: false
+  
+  # true iff we want a horizontal scrollbar when appropriate
+  # note: if jscrollpane is false, use css on .center (overflow-x = auto or hidden)
+  scrollh: true
+  
+  # true iff we want a vertical scrollbar when appropriate
+  # note: if jscrollpane is false, use css on .center (overflow-y = auto or hidden)
+  # note: a false value is somewhat buggy with jscrollpane
+  scrollv: true
+
+
+# Codes used to style text in the terminal. The defaults can be
+# overriden on a per-screen basis.
+sgr:
+
+  # Base style for all characters
+  base_style: ""
+
+  # Style for normal weight
+  normal_style: ""
+
+  # Style for bold or bright characters
+  bold_style: "font-weight: bold;"
+
+  # Style for default foreground
+  default_fg: 7
+
+  # Style for default background
+  # -1 to have no background at all
+  default_bg: -1
+
+  # Opacity of the characters (0.0 - 1.0)
+  opacity: 1.0
+
+  # Styles to give spans that are given certain modes
+  styles:
+    3: "font-style: italic;"
+    4: "text-decoration: underline;"
+    9: "text-decoration: line-through;"
+    23: "font-style: normal;"
+    24: "text-decoration: none;"
+    29: "text-decoration: none;"
+    53: "text-decoration: overline;"
+    55: "text-decoration: none;"
+
+  # Terminal colors
+  colors:
+
+    # Normal intensity
+    0: '#000'
+    1: '#800'
+    2: '#080'
+    3: '#a80'
+    4: '#008'
+    5: '#808'
+    6: '#088'
+    7: '#aaa'
+
+    # Bright (bold) intensity
+    10: black
+    11: red
+    12: green
+    13: yellow
+    14: blue
+    15: magenta
+    16: cyan
+    17: white
+
+
+
+log:
+  # Whether logging happens from the start
+  start: on
+  
+  # Where to log
+  #   TODO console = log to javascript console
+  #   "#elem" = log to the element with that id
+  where: "#log"
+
+  # What to log
+  #   off: log nothing
+  #   all: log everything
+  #   error: unexpected exceptions thrown during execution
+  #   usererror: errors thrown by javascript code given by the user
+  #   esc: log escape codes
+  #   esc_unknown: log unknown escape codes
+  #   test: messages sent to logging during development, there should be
+  #         no such messages in the production version
+  #   info: informative stuff like logging: on/off
+  #   nest: debug information about nest creation and removal
+  #   exec: show the key bindings from the bindings list that are executed
+  #   keydown: show the keycodes produced as you type (useful if you want
+  #         to know how to bind some key combination).
+  #   resize: when the terminal is resized
+  # Note: you can define a list of things to log.
+  what:
+    - error
+    - usererror
+    # - esc
+    - esc_unknown
+    - test
+    - info
+    - nest
+    # - exec
+    # - keydown
+    - resize
+
+  # Prefix to all logged things (useful to determine source if there
+  # are nested terminals).
+  # Set to no/false/off if there is no prefix
+  prefix: no
+
+  # Grouping delay in milliseconds. If this time elapses with no
+  # additional logging, the next entry in the log will cause the
+  # current block to slide down and a new block to be created. In an
+  # interactive setting, this typically creates a distinct log block
+  # for each interaction that causes logging.
+  group_delay: 100
+
+  # If true there will be a nifty slidedown animation
+  animate: yes
+
+  # If true the divs will be colorized
+  colorize: yes
+
+
+# Key bindings
+# Syntax:
+# key: C- for Ctrl, A- for Alt, S- for Shift, in that order, lowercase for letter
+# value:
+#   ~command: execute the command
+#   ~~X: with a (case-sensitive!) character X, print the character code charcode(X)-64
+#   word: print the word verbatim
+#   sub-bindings: instead of a command string, you can specify further
+#       sub-bindings to look through when other keys are pressed right
+#       after the main key.
+
+# You can give more than one command to execute with a given key
+# binding, just make a list separated by spaces.
+
+# ~space to get a literal space and ~tilde to get a literal tilde
+# ~esc for an escape character, ~csi is equivalent to ~esc [
+
+# See the C-S-a example at the top of the bindings.
+
+bindings:
+
+  C-S-z: ~garbage
+
+  # EXAMPLE (edit it to your heart's content, it's really completely
+  # arbitrary stuff to show you how to customize bindings)
+  # When Control, Shift and A are pressed together ->
+  C-S-a:
+    # if the next keypress is Z, then write out the word "zebra"
+    z: zebra
+
+    # if it is Shift and Z, then write it out in caps
+    S-z: ZEBRA
+
+    # if it is the Left or Right arrow, we will go one word left or
+    # right
+    Left: ~word_left
+    Right: ~word_right
+
+    # If it is k we will kill the line
+    k: ~~K
+
+    # If it is y we will paste what we killed
+    # IMPORTANT: y and n are interpreted as true and false
+    # respectively, so put quotes around them.
+    "y": ~~Y
+
+    # _eat: true means that if a key is not recognized, its effect
+    # will not happen, but we will revert to the top level bindings
+    # (it defaults to false). So for instance if we type C-S-a Home,
+    # Home won't do anything, but it will if we hit it again. If _eat
+    # is false, then Home will do what it does normally, right away.
+    # Sub-bindings do NOT inherit _eat: true.
+    _eat: true
+
+    # if we hit c then we will perform commands
+    c:
+        # if it is the up arrow:
+          # 1) Go to the beginning of the line (~~A)
+          # 2) Kill the line (~~K)
+          # 3) Type cd .. (to input a space we need to use ~space)
+          # 4) Hit the return key
+        p: "~~A ~~K cd ~space .. ~enter"
+
+        # Same principle, but to list the directory
+        l: "~~A ~~K ls ~space -l ~enter"
+
+        # Better yet! Go up and down the hierarchy with pushd/popd ;)
+        Up: "~~A ~~K pushd ~space .;cd ~space .. ~enter"
+        Down: "~~A ~~K popd ~enter"
+
+        # _stick: true means that we only revert to the top level
+        # bindings when the user hits a key that is not listed in
+        # here. So for instance, you can hit p three times in a row to
+        # go up three levels in the hierarchy. If you hit a key other
+        # than p, l, Up or Down then it'll have its normal effect and
+        # will cancel the special bindings until you type C-S-a c
+        # again. If _stick is false (it is false by default), then
+        # hitting l twice in a row will list the files and then
+        # produce the letter l.  Note: _eat is false here: it's not
+        # inherited (and _stick is not inherited either)
+        _stick: true
+
+  # handy
+  C-S-b: ~clear_processing_backlog
+
+  # clear stuff
+  C-S-c:
+    b: ~clear_processing_backlog
+    l: ~clear_log
+    s: ~clear_scrollback
+    Up: ~clear_up
+    Down: ~clear_down
+    Left: ~clear_left
+    Right: ~clear_right
+    Space: ~clear_up ~clear_down ~clear_left ~clear_right
+
+  # this allows to get the browser key binding for the next key
+  # e.g. C-S-d C-l will focus the location bar, etc.
+  C-S-d:
+    _browser: true
+
+  # clear scrollback
+  C-S-l: ~clear_scrollback
+
+  # switch logging on or off
+  C-S-p: ~log_mode
+
+  # navigation
+  C-Left: ~word_left
+  C-Right: ~word_right
+  C-Up: ~word_up
+  C-Down: ~word_down
+  A-Left: ~csi 1;3D
+  A-Right: ~csi 1;3C
+  A-Up: ~csi 1;3A
+  A-Down: ~csi 1;3B
+  Home: ~home
+  End: ~end
+  C-Home: ~csi 1;5H
+  C-End: ~csi 1;5F
+  C-PgUp: ~csi 5;5~
+  C-PgDn: ~csi 6;5~
+  A-Home: ~csi 1;3H
+  A-End: ~csi 1;3F
+  A-PgUp: ~csi 5;3~
+  A-PgDn: ~csi 6;3~
+
+  # deletion
+  C-Backspace: ~word_delete_left
+  C-Delete: ~word_delete_right
+
+  # scrolling
+  S-Up: ~scroll_up_line
+  S-Down: ~scroll_down_line
+  S-PgUp: ~scroll_up_page
+  S-PgDn: ~scroll_down_page
+
+  # DEFAULTS
+  Backspace: ~backspace
+  Tab: ~tab
+  S-Tab: ~csi Z
+  Esc: ~esc
+  PgUp: ~pgup
+  PgDn: ~pgdn
+  End: ~end
+  Home: ~home
+  Left: ~left
+  Up: ~up
+  Right: ~right
+  Down: ~down
+  Insert: ~insert
+  Delete: ~delete
+  F1: ~f1
+  F2: ~f2
+  F3: ~f3
+  F4: ~f4
+  # F5: ~f5 # disables refresh with F5 if uncommented
+  F6: ~f6
+  F7: ~f7
+  F8: ~f8
+  F9: ~f9
+  F10: ~f10
+  F11: ~f11
+  F12: ~f12
+
+  # CTRL+<KEY> (because explicit is better than implicit)
+  C-Space: "~~@"
+  C-a: ~~A
+  C-b: ~~B
+  C-c: ~~C
+  C-d: ~~D
+  C-e: ~~E
+  C-f: ~~F
+  C-g: ~~G
+  C-h: ~~H
+  C-i: ~~I
+  C-j: ~~J
+  C-k: ~~K
+  C-l: ~~L
+  C-m: ~~M
+  C-n: ~~N   # might not work in all browsers
+  C-o: ~~O
+  C-p: ~~P
+  C-q: ~~Q
+  C-r: ~~R
+  C-s: ~~S
+  C-t: ~~T   # might not work in all browsers
+  C-u: ~~U
+  # C-v: ~~V # disables paste if uncommented, but you can also do C-S-d C-v
+  C-w: ~~W   # might not work in all browsers
+  C-x: ~~X
+  C-y: ~~Y
+  C-z: ~~Z
+
+  S-Space:
+    # Doing Shift-Space and then a letter will send an escape
+    # character, much like hitting Control and that character.
+    Space: "~~@"
+    a: ~~A
+    b: ~~B
+    c: ~~C
+    d: ~~D
+    e: ~~E
+    f: ~~F
+    g: ~~G
+    h: ~~H
+    i: ~~I
+    j: ~~J
+    k: ~~K
+    l: ~~L
+    m: ~~M
+    "n": ~~N
+    o: ~~O
+    p: ~~P
+    q: ~~Q
+    r: ~~R
+    s: ~~S
+    t: ~~T
+    u: ~~U
+    v: ~~V
+    w: ~~W
+    x: ~~X
+    "y": ~~Y
+    z: ~~Z
+
+  # ALT+<KEY>
+  A-a: ~esc a
+  A-b: ~esc b
+  A-c: ~esc c
+  A-d: ~esc d
+  A-e: ~esc e
+  A-f: ~esc f
+  A-g: ~esc g
+  A-h: ~esc h
+  A-i: ~esc i
+  A-j: ~esc j
+  A-k: ~esc k
+  A-l: ~esc l
+  A-m: ~esc m
+  A-n: ~esc n
+  A-o: ~esc o
+  A-p: ~esc p
+  A-q: ~esc q
+  A-r: ~esc r
+  A-s: ~esc s
+  A-t: ~esc t
+  A-u: ~esc u
+  A-v: ~esc v
+  A-w: ~esc w
+  A-x: ~esc x
+  A-y: ~esc y
+  A-z: ~esc z
+
