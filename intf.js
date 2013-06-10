@@ -6,7 +6,7 @@ Module.stdin_add = function (str) {
     var bytes = intArrayFromString(str);
     bytes.pop(); // remove NUL at end
     if (bytes.length === 1 && bytes[0] === 3) { // ctrl-C ?
-        //Module.terminal.new_data("^C");
+        Module.terminal.new_data("^C");
         _user_interrupt();
     } else {
         Module.stdin_buffer = Module.stdin_buffer.concat(bytes);
@@ -16,6 +16,7 @@ Module.stdin_add = function (str) {
 Module.stdin = function () {
 
     if (Module.stdin_buffer.length === 0) {
+        _heartbeat_interrupt();
         return undefined;
     } else {
         return Module.stdin_buffer.shift();
@@ -24,15 +25,18 @@ Module.stdin = function () {
 
 Module.stdout = function (val) {
 
-    var str;
+    if (val !== null) {
 
-    if (val === null || val === 10) {
-        str = '\r\n';
-    } else {
-        str = String.fromCharCode(val);
+	var str;
+
+	if (val === 10) {
+            str = '\r\n';
+        } else {
+            str = String.fromCharCode(val);
+	}
+
+	Module.terminal.new_data(str);
     }
-
-    Module.terminal.new_data(str);
 };
 
 Module.error = Module.output;
@@ -52,15 +56,16 @@ function emscripten_tty_io(terminal, settings) {
     return self;
 }
 
-// Start the interpreter when the page is ready
+// Scheme code execution driver
 
 function run_scheme() {
 
     function step_scheme() {
-        var wait = _heartbeat();
+        var wait = _idle();
         if (wait < 0) {
             _cleanup();
         } else {
+            //console.log("wait=" + wait);
             setTimeout(step_scheme, Math.max(1, Math.round(1000*wait)));
         }
     };
@@ -68,6 +73,8 @@ function run_scheme() {
     _setup();
     step_scheme();
 }
+
+// Start the interpreter when the page is ready
 
 $(document).ready(function() {
 
