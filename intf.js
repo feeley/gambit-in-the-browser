@@ -16,7 +16,6 @@ Module.stdin_add = function (str) {
 Module.stdin = function () {
 
     if (Module.stdin_buffer.length === 0) {
-        _heartbeat_interrupt();
         return undefined;
     } else {
         return Module.stdin_buffer.shift();
@@ -61,6 +60,7 @@ function emscripten_tty_io(terminal, settings) {
 function run_scheme() {
 
     function step_scheme() {
+        _heartbeat_interrupt();
         var wait = _idle();
         if (wait < 0) {
             _cleanup();
