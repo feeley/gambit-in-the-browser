@@ -26,15 +26,15 @@ Module.stdout = function (val) {
 
     if (val !== null) {
 
-	var str;
+        var str;
 
-	if (val === 10) {
+        if (val === 10) {
             str = '\r\n';
         } else {
             str = String.fromCharCode(val);
-	}
+        }
 
-	Module.terminal.new_data(str);
+        Module.terminal.new_data(str);
     }
 };
 
