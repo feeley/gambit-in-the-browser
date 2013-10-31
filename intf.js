@@ -1,3 +1,11 @@
+//=============================================================================
+
+// File: "intf.js"
+
+// Copyright (c) 2013 by Marc Feeley, All Rights Reserved.
+
+//=============================================================================
+
 var Module = {};
 
 Module.stdin_buffer = [];
@@ -6,7 +14,7 @@ Module.stdin_add = function (str) {
     var bytes = intArrayFromString(str);
     bytes.pop(); // remove NUL at end
     if (bytes.length === 1 && bytes[0] === 3) { // ctrl-C ?
-        Module.terminal.new_data("^C");
+        Module.terminal.new_data('^C');
         _user_interrupt();
     } else {
         Module.stdin_buffer = Module.stdin_buffer.concat(bytes);
@@ -38,9 +46,28 @@ Module.stdout = function (val) {
     }
 };
 
-Module.error = Module.output;
+Module.stderr = Module.stdout;
 
-function emscripten_tty_io(terminal, settings) {
+Module.setupTTYIO = function () {
+
+    // redirect TTY I/O to stdin and stdout
+
+    var ops = {
+        get_char: function (tty) {
+            return Module.stdin();
+        },
+        put_char: function (tty, val) {
+            return Module.stdout(val);
+        }
+    };
+
+    TTY.register(FS.makedev(5, 0), ops); // redirect /dev/tty
+    TTY.register(FS.makedev(6, 0), ops); // redirect /dev/tty1
+};
+
+Module.preRun = [Module.setupTTYIO];
+
+Module.setupTerminal = function (terminal, settings) {
 
     var self = Terminus.obj();
 
@@ -53,11 +80,11 @@ function emscripten_tty_io(terminal, settings) {
 //    setInterval(function () { terminal.adjust_size(); }, 500)
 
     return self;
-}
+};
 
 // Scheme code execution driver
 
-function run_scheme() {
+Module.schemeDriver = function () {
 
     function step_scheme() {
         _heartbeat_interrupt();
@@ -65,24 +92,23 @@ function run_scheme() {
         if (wait < 0) {
             _cleanup();
         } else {
-            //console.log("wait=" + wait);
+            //console.log('wait=' + wait);
             setTimeout(step_scheme, Math.max(1, Math.round(1000*wait)));
         }
     };
 
     _setup();
     step_scheme();
-}
+};
 
-// Start the interpreter when the page is ready
+Module.schemeStart = function () {
 
-$(document).ready(function() {
-
-    var setting_files = "resources/settings/default.yaml".split(":");
+    var setting_files = 'resources/settings/default.yaml'.split(':');
 
     Terminus.grab_settings({}, setting_files, function (settings) {
-        var terminal = Terminus.Terminal($("#terminal"), settings);
-        terminal.connect(emscripten_tty_io);
+
+        var terminal = Terminus.Terminal($('#terminal'), settings);
+        terminal.connect(Module.setupTerminal);
         Terminus.interact(terminal, settings.bindings);
 
         Module.terminal = terminal;
@@ -101,7 +127,13 @@ $(document).ready(function() {
 //            setTimeout(terminal.adjust_size, 10);
 //        });
 
-        run_scheme(); // run the Gambit Scheme interpreter
+        Module.schemeDriver(); // run the Scheme code
     });
 
-});
+};
+
+// Start the Scheme program when the page is ready
+
+$(document).ready(Module.schemeStart);
+
+//=============================================================================

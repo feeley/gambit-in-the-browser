@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Gambit in the browser v0.2</title>
+    <title>Gambit in the browser v0.3</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -30,18 +30,21 @@
     <link type="text/css" href="resources/style/table.css" rel="stylesheet"/>
     <link type="text/css" href="resources/style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
 
-    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-
     <script type="text/javascript" src="resources/script/jquery.js"></script>
     <script type="text/javascript" src="resources/script/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="resources/script/mwheelIntent.js"></script>
     <script type="text/javascript" src="resources/script/jquery.jscrollpane.js"></script>
+
     <script type="text/javascript" src="resources/script/js-yaml.min.js"></script>
+
+    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+
     <script type="text/javascript" src="resources/script/terminus-core.js"></script>
     <script type="text/javascript" src="resources/script/terminus-terminal.js"></script>
     <script type="text/javascript" src="resources/script/terminus-svg.js"></script>
     <script type="text/javascript" src="resources/script/terminus-table.js"></script>
     <script type="text/javascript" src="resources/script/terminus-xy.js"></script>
+
     <script type="text/javascript" src="intf.js"></script>
     <script type="text/javascript" src="gsi.js"></script>
 
@@ -57,7 +60,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="http://gambitscheme.org">Gambit in the browser v0.2</a>
+          <a class="brand" href="http://gambitscheme.org">Gambit in the browser v0.3</a>
         </div>
       </div>
     </div>
@@ -82,7 +85,31 @@
          <a class="btn btn-primary" onclick='Module.stdin_add("(help trace)\r");'>getting help</a>
          <a class="btn btn-primary" onclick='Module.stdin_add("(directory-files \".\")\r");'>list files</a>
          <a class="btn btn-primary" onclick='Module.stdin_add("(print (read-line (open-input-file \"fib.scm\") #f))\r");'>view file</a>
+         <a class="btn btn-primary" onclick='Module.stdin_add("(jseval \"document.location\")\r(jseval \"alert(\\\"hello!\\\")\")\r");'>jseval</a>
          <a class="btn btn-primary" onclick='Module.stdin_add("(term-esc \"+h \<img src=\\\"http://gambitscheme.org/wiki/skins/common/images/gambit-logo.png\\\" style=\\\"background-color:yellow\\\"\>\\n\")\r");'>Gambit logo</a>
+      </p>
+
+      <p>
+         The performance will depend on the browser and version you are using.  Here is
+         a table summarizing the performance of the
+         <a class="btn btn-primary" onclick='Module.stdin_add("(load \"bench\")\r");'>fib benchmark</a>
+         on a 2012 notebook on 3 browsers and when compiled natively with gcc:
+
+           <table>
+             <tr>
+               <td>gcc</td><td>56 ms</td>
+             </tr>
+             <tr>
+               <td>Firefox 28.0a1</td><td>982 ms</td>
+             </tr>
+             <tr>
+               <td>Chrome Version 30.0.1599.101</td><td>1135 ms</td>
+             </tr>
+             <tr>
+               <td>Safari Version 7.0</td><td>2782 ms</td>
+             </tr>
+           </table>
+
       </p>
 
       <p>
